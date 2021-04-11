@@ -95,27 +95,71 @@ void Session::setBackgroundColor(Color backgroundColor)
 	}
 }
 
-void Session::drawSerial()
+void Session::drawSerial(bool asynch)
 {
-	QThreadPool::globalInstance()->start(new SerialDrawRunnable(this));
+	if (asynch)
+	{
+		QThreadPool::globalInstance()->start(new SerialDrawRunnable(this, true, true));
+	}
+	else
+	{
+		sendData(false);
+		refresh(false);
+	}
+}
+
+void Session::sendData(bool asynch)
+{
+	if (asynch)
+	{
+		QThreadPool::globalInstance()->start(new SerialDrawRunnable(this, true, false));
+	}
+	else
+	{
+		_serialDisplay.setBackgroundColor(_backgroundColor);
+		_serialDisplay.setDirection(_direction);
+		_serialDisplay.clearScreen();
+
+		for (int i = 0; i < _elements.size(); i++)
+		{
+			_elements[i]->display(&_serialDisplay);
+		}
+	}
+}
+
+void Session::refresh(bool asynch)
+{
+	if (asynch)
+	{
+		QThreadPool::globalInstance()->start(new SerialDrawRunnable(this, false, true));
+	}
+	else
+	{
+		_serialDisplay.refresh();
+	}
 }
 
 void Session::SerialDrawRunnable::run()
 {
-	_session->_serialDisplay.setBackgroundColor(_session->_backgroundColor);
-	_session->_serialDisplay.setDirection(_session->_direction);
-	_session->_serialDisplay.clearScreen();
-
-	for (int i = 0; i < _session->_elements.size(); i++)
+	if (_sendData)
 	{
-		_session->_elements[i]->display(&_session->_serialDisplay);
+		_session->sendData(false);
 	}
-	_session->_serialDisplay.refresh();
+
+	if (_sendReflesh)
+	{
+		_session->refresh(false);
+	}
 }
 
 void Session::updateWriteStatus(int percent)
 {
 	emit newWriteStatus(percent);
+}
+
+void Session::waitReady()
+{
+	_serialDisplay.checkReady();
 }
 
 void Session::cancelSerial()

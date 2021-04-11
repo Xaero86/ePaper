@@ -14,7 +14,8 @@ public:
 	EPaperController();
 	~EPaperController();
 	
-	int display(const QString &path, bool sendVeille);
+	int display(const QString &path, bool sendVeille, bool sendRefresh);
+	int refresh(bool sendVeille);
 
 public slots:
 	void handleStatus(int status);

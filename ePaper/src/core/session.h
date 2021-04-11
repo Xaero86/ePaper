@@ -45,7 +45,10 @@ signals:
 public slots:
 	void handleStatus(int status);
 	void changeSerialPort(const QString &port);
-	void drawSerial();
+	void drawSerial(bool asynch = true);
+	void sendData(bool asynch = true);
+	void refresh(bool asynch = true);
+	void waitReady();
 	void cancelSerial();
 	void turnIdleSerial();
 	void updateWriteStatus(int percent);
@@ -60,11 +63,13 @@ private:
 	class SerialDrawRunnable : public QRunnable
 	{
 	public:
-		SerialDrawRunnable(Session* session) : _session(session) {}
+		SerialDrawRunnable(Session* session, bool sendData, bool sendReflesh) : _session(session), _sendData(sendData), _sendReflesh(sendReflesh) {}
 		void run();
 
 	private:
 		Session* _session;
+		bool     _sendData;
+		bool     _sendReflesh;
 	};
 };
 

@@ -30,6 +30,7 @@ public:
 
 	void turnIdle();
 	void refresh();
+	bool checkReady();
 
 	void cancelOperation();
 
@@ -58,7 +59,6 @@ private:
 	void setFontSize(int size);
 	bool wakeUp(int nbTry);
 
-	bool checkReady();
 	void setBaudRate(unsigned int);
 	int getBaudRate();
 	void getDirection();

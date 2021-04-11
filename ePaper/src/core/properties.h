@@ -24,7 +24,6 @@ public:
 	static QString defaultSerialPort()    { return G_SingleInstance._defaultSerialPort; }
 	static unsigned int wakeUpMode()      { return G_SingleInstance._wakeUpMode; }
 	static unsigned int wakeUpDelay()     { return G_SingleInstance._wakeUpDelay; }
-	static QString wakeUpScript()         { return G_SingleInstance._wakeUpScript; }
 
 	static bool debug()                   { return G_SingleInstance._debug; }
 
@@ -46,7 +45,6 @@ private:
 	QString      _defaultSerialPort;
 	unsigned int _wakeUpMode;
 	unsigned int _wakeUpDelay;
-	QString      _wakeUpScript;
 
 	bool         _debug;
 };

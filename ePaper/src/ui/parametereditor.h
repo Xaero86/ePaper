@@ -18,6 +18,9 @@
 #include <QComboBox>
 #include <QCheckBox>
 
+#define EDITOR_NUM_WIDTH  40
+#define EDITOR_TEXT_WIDTH 110
+
 class ParameterEditor : public QGroupBox
 {
 	Q_OBJECT
@@ -90,9 +93,12 @@ private:
 
 	QHBoxLayout* _lineText;
 	QLineEdit*   _editText;
+	void createLineText();
+
+	QHBoxLayout* _lineTextSize;
 	QLabel*      _labelSizeText;
 	QComboBox*   _comboSizeText;
-	void createLineText();
+	void createLineTextSize();
 
 	QHBoxLayout* _lineRadius;
 	QLabel*      _labelRadius;

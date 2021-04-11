@@ -23,7 +23,7 @@ EPaperController::~EPaperController()
 	_myThread.wait();
 }
 
-int EPaperController::display(const QString &path, bool sendVeille)
+int EPaperController::display(const QString &path, bool sendVeille, bool sendRefresh)
 {
 	if (!path.isEmpty())
 	{
@@ -32,7 +32,7 @@ int EPaperController::display(const QString &path, bool sendVeille)
 		
 		if (!_everythingOK)
 		{
-			return -1;
+			return 1;
 		}
 	}
 
@@ -43,23 +43,28 @@ int EPaperController::display(const QString &path, bool sendVeille)
 	
 	if (!_everythingOK)
 	{
-		return -1;
+		return 1;
 	}
 	
 	_previousStatus = -1;
 
 	if (!path.isEmpty())
 	{
-		_mutexWrite.lock();
-		_session.drawSerial();
-		_waitWriteCondition.wait(&_mutexWrite);
-		_mutexWrite.unlock();
+		if (sendRefresh)
+		{
+			_session.drawSerial(false);
+		}
+		else
+		{
+			_session.sendData(false);
+		}
+		_session.waitReady();
 
 		if (!_everythingOK)
 		{
-			return -1;
+			return 1;
 		}
-		
+
 		if (sendVeille)
 		{
 			QThread::sleep(2);
@@ -75,7 +80,45 @@ int EPaperController::display(const QString &path, bool sendVeille)
 
 		if (!_everythingOK)
 		{
-			return -1;
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int EPaperController::refresh(bool sendVeille)
+{
+	_mutexStatus.lock();
+	_session.changeSerialPort(Properties::defaultSerialPort());
+	_waitStatusCondition.wait(&_mutexStatus);
+	_mutexStatus.unlock();
+
+	if (!_everythingOK)
+	{
+		return 1;
+	}
+
+	_previousStatus = -1;
+
+	_session.refresh(false);
+	_session.waitReady();
+
+	if (!_everythingOK)
+	{
+		return 1;
+	}
+
+	if (sendVeille)
+	{
+		QThread::sleep(2);
+		_mutexWrite.lock();
+		_session.turnIdleSerial();
+		_waitWriteCondition.wait(&_mutexWrite);
+		_mutexWrite.unlock();
+
+		if (!_everythingOK)
+		{
+			return 1;
 		}
 	}
 	return 0;

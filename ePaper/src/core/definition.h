@@ -13,7 +13,6 @@ enum class Direction { horizontal0, vertical1, horizontal2, vertical3, unknown }
 #define WAKE_UP_RTS     2
 #define WAKE_UP_DTR_INV 3
 #define WAKE_UP_RTS_INV 4
-#define WAKE_UP_SCRIPT  5
 
 #define NONE_PORT "<None>"
 

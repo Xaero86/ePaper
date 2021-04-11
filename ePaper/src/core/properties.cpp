@@ -22,7 +22,6 @@ Properties::Properties()
 	_defaultSerialPort           = NONE_PORT;
 	_wakeUpMode                  = WAKE_UP_NONE;
 	_wakeUpDelay                 = 1000;
-	_wakeUpScript                = QString();
 	_debug                       = false;
 }
 
@@ -103,39 +102,14 @@ void Properties::loadPropertyFile(const QString &path)
 				{
 					G_SingleInstance._wakeUpMode = WAKE_UP_RTS_INV;
 				}
-				else if (QString::compare(wakeUpMode, "script", Qt::CaseInsensitive) == 0)
-				{
-					if (!wakeUpNode.isNull())
-					{
-						G_SingleInstance._wakeUpMode = WAKE_UP_SCRIPT;
-						G_SingleInstance._wakeUpScript = wakeUpNode.toElement().attribute("script");
-					}
-					else
-					{
-						G_SingleInstance._wakeUpMode = WAKE_UP_NONE;
-					}
-				}
 				if (!wakeUpNode.isNull())
 				{
-					if (G_SingleInstance._wakeUpMode == WAKE_UP_SCRIPT)
+					QString wakeUpDel = wakeUpNode.toElement().attribute("delay");
+					bool okw;
+					int wakeUpDelay = wakeUpDel.toInt(&okw);
+					if (okw && (wakeUpDelay >= 100))
 					{
-						QString wakeUpDel = wakeUpNode.toElement().attribute("timeout");
-						bool okw;
-						int wakeUpDelay = wakeUpDel.toInt(&okw);
-						if (okw && (wakeUpDelay <= 5000))
-						{
-							G_SingleInstance._wakeUpDelay = wakeUpDelay;
-						}
-					}
-					else
-					{
-						QString wakeUpDel = wakeUpNode.toElement().attribute("delay");
-						bool okw;
-						int wakeUpDelay = wakeUpDel.toInt(&okw);
-						if (okw && (wakeUpDelay >= 100))
-						{
-							G_SingleInstance._wakeUpDelay = wakeUpDelay;
-						}
+						G_SingleInstance._wakeUpDelay = wakeUpDelay;
 					}
 				}
 

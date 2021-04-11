@@ -127,9 +127,11 @@ void ParameterEditor::createTextEditor()
 {
 	createLine();
 	createLineText();
+	createLineTextSize();
 	QVBoxLayout *vbl = new QVBoxLayout;
 	vbl->addLayout(_line);
 	vbl->addLayout(_lineText);
+	vbl->addLayout(_lineTextSize);
 	vbl->addStretch(1);
 	setLayout(vbl);
 }
@@ -308,11 +310,11 @@ void ParameterEditor::createLine()
 	_labelX = new QLabel("X: ", _parent);
 	_editX = new QLineEdit(_parent);
 	_editX->setValidator(new QIntValidator(-1000,1000,_parent));
-	_editX->setFixedWidth(QFontMetrics(_editX->font()).width("-00000"));
+	_editX->setFixedWidth(EDITOR_NUM_WIDTH);
 	_labelY = new QLabel("Y: ", _parent);
 	_editY = new QLineEdit(_parent);
 	_editY->setValidator(new QIntValidator(-1000,1000,_parent));
-	_editY->setFixedWidth(QFontMetrics(_editY->font()).width("-00000"));
+	_editY->setFixedWidth(EDITOR_NUM_WIDTH);
 	_line->addWidget(_labelX);
 	_line->addWidget(_editX);
 	_line->addWidget(_labelY);
@@ -326,11 +328,11 @@ void ParameterEditor::createLine0()
 	_labelX0 = new QLabel("X0: ", _parent);
 	_editX0 = new QLineEdit(_parent);
 	_editX0->setValidator(new QIntValidator(-1000,1000,_parent));
-	_editX0->setFixedWidth(QFontMetrics(_editX0->font()).width("-00000"));
+	_editX0->setFixedWidth(EDITOR_NUM_WIDTH);
 	_labelY0 = new QLabel("Y0: ", _parent);
 	_editY0 = new QLineEdit(_parent);
 	_editY0->setValidator(new QIntValidator(-1000,1000,_parent));
-	_editY0->setFixedWidth(QFontMetrics(_editY0->font()).width("-00000"));
+	_editY0->setFixedWidth(EDITOR_NUM_WIDTH);
 	_line0->addWidget(_labelX0);
 	_line0->addWidget(_editX0);
 	_line0->addWidget(_labelY0);
@@ -344,11 +346,11 @@ void ParameterEditor::createLine1()
 	_labelX1 = new QLabel("X1: ", _parent);
 	_editX1 = new QLineEdit(_parent);
 	_editX1->setValidator(new QIntValidator(-1000,1000,_parent));
-	_editX1->setFixedWidth(QFontMetrics(_editX1->font()).width("-00000"));
+	_editX1->setFixedWidth(EDITOR_NUM_WIDTH);
 	_labelY1 = new QLabel("Y1: ", _parent);
 	_editY1 = new QLineEdit(_parent);
 	_editY1->setValidator(new QIntValidator(-1000,1000,_parent));
-	_editY1->setFixedWidth(QFontMetrics(_editY1->font()).width("-00000"));
+	_editY1->setFixedWidth(EDITOR_NUM_WIDTH);
 	_line1->addWidget(_labelX1);
 	_line1->addWidget(_editX1);
 	_line1->addWidget(_labelY1);
@@ -362,11 +364,11 @@ void ParameterEditor::createLine2()
 	_labelX2 = new QLabel("X2: ", _parent);
 	_editX2 = new QLineEdit(_parent);
 	_editX2->setValidator(new QIntValidator(-1000,1000,_parent));
-	_editX2->setFixedWidth(QFontMetrics(_editX2->font()).width("-00000"));
+	_editX2->setFixedWidth(EDITOR_NUM_WIDTH);
 	_labelY2 = new QLabel("Y2: ", _parent);
 	_editY2 = new QLineEdit(_parent);
 	_editY2->setValidator(new QIntValidator(-1000,1000,_parent));
-	_editY2->setFixedWidth(QFontMetrics(_editY2->font()).width("-00000"));
+	_editY2->setFixedWidth(EDITOR_NUM_WIDTH);
 	_line2->addWidget(_labelX2);
 	_line2->addWidget(_editX2);
 	_line2->addWidget(_labelY2);
@@ -379,16 +381,22 @@ void ParameterEditor::createLineText()
 	_lineText = new QHBoxLayout;
 	_editText = new QLineEdit(_parent);
 	_editText->setMaxLength(1020);
-	_editText->setFixedWidth(QFontMetrics(_editText->font()).width("0000000000"));
+	_editText->setFixedWidth(EDITOR_TEXT_WIDTH);
+	_lineText->addWidget(_editText);
+	_lineText->addStretch(1);
+}
+
+void ParameterEditor::createLineTextSize()
+{
+	_lineTextSize = new QHBoxLayout;
 	_labelSizeText = new QLabel("Taille: ", _parent);
 	_comboSizeText = new QComboBox(_parent);
 	_comboSizeText->addItem("1");
 	_comboSizeText->addItem("2");
 	_comboSizeText->addItem("3");
-	_lineText->addWidget(_editText);
-	_lineText->addWidget(_labelSizeText);
-	_lineText->addWidget(_comboSizeText);
-	_lineText->addStretch(1);
+	_lineTextSize->addWidget(_labelSizeText);
+	_lineTextSize->addWidget(_comboSizeText);
+	_lineTextSize->addStretch(1);
 }
 
 void ParameterEditor::createLineFill()
@@ -407,7 +415,7 @@ void ParameterEditor::createLineRadius()
 	_labelRadius = new QLabel("Rayon: ", _parent);
 	_editRadius = new QLineEdit(_parent);
 	_editRadius->setValidator(new QIntValidator(0,1000,_parent));
-	_editRadius->setFixedWidth(QFontMetrics(_editRadius->font()).width("-00000"));
+	_editRadius->setFixedWidth(EDITOR_NUM_WIDTH);
 	_lineRadius->addWidget(_labelRadius);
 	_lineRadius->addWidget(_editRadius);
 	_lineRadius->addStretch(1);

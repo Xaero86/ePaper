@@ -475,12 +475,6 @@ void SerialThread::wakeUp()
 			QThread::msleep(Properties::wakeUpDelay());
 			_serialPort.setRequestToSend(false);
 		}
-		else if (Properties::wakeUpMode() == WAKE_UP_SCRIPT)
-		{
-			QProcess process;
-			process.start(Properties::wakeUpScript());
-			process.waitForFinished(Properties::wakeUpDelay());
-		}
 	}
 }
 

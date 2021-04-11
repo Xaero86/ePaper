@@ -424,7 +424,9 @@ void SerialDisplay::displayText(short x, short y, const QString &text, unsigned 
 	{
 		// remove no ascii char
 		if (text[i].unicode() <= 127)
-			data.append(text[i]);
+		{
+			data.append(text[i].unicode());
+		}
 	}
 	data.append('\0'); // add '\0' end of string
 	data.append('\0'); // add 5 bytes for footer

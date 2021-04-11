@@ -105,35 +105,3 @@ HEADERS += \
 
 INCLUDEPATH = $$PWD/src/ui $$PWD/src/core $$PWD/src/ui/ToolAdd $$PWD/src/core/drawable
 
-win32 {
-    CONFIG(debug, debug|release) {
-        DELIVERY_PATH = $$PWD/delivery/debug
-        APPLICATION_FILE = $$OUT_PWD/debug/ePaper.exe
-    }
-    CONFIG(release, debug|release) {
-        DELIVERY_PATH = $$PWD/delivery/release
-        APPLICATION_FILE = $$OUT_PWD/release/ePaper.exe
-    }
-    
-    !exists($$DELIVERY_PATH) {
-        QMAKE_POST_LINK += mkdir \"$$shell_path($$DELIVERY_PATH)\" $$escape_expand(\\n\\t)
-    }
-    QMAKE_POST_LINK += copy /y \"$$shell_path($$APPLICATION_FILE)\" \"$$shell_path($$DELIVERY_PATH)\" $$escape_expand(\\n\\t)
-    
-    DEPENDENCY_LIB = \
-        Qt5Gui.dll \
-        Qt5Network.dll \
-        Qt5Core.dll \
-        Qt5SerialPort.dll \
-        Qt5Widgets.dll \
-        Qt5Xml.dll \
-        libgcc_s_dw2-1.dll \
-        libstdc++-6.dll \
-        libwinpthread-1.dll
-    
-    FILES_TO_COPY =
-    
-    for(FILE,DEPENDENCY_LIB) {
-        QMAKE_POST_LINK += copy /y \"$$shell_path($$[QT_INSTALL_BINS]/$$FILE)\" \"$$shell_path($$DELIVERY_PATH)\" $$escape_expand(\\n\\t)
-    }
-}

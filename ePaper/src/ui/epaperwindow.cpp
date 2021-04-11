@@ -42,6 +42,7 @@ EPaperWindow::EPaperWindow()
 	_elementsWidget->setModel(_elementModel);
 	_elementsWidget->setItemDelegateForColumn(1, new ComboBoxDelegate(this, &_session));
 	_elementsWidget->setItemDelegateForColumn(2, new ParameterDelegate(this, &_session));
+	_elementsWidget->header()->setStretchLastSection(false);
 
 	QDockWidget::DockWidgetFeatures defaultDockFeature = QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable;
 
@@ -78,9 +79,7 @@ EPaperWindow::EPaperWindow()
 	QDockWidget *_serialDockWidget = new QDockWidget("Connexion", this);
 	_serialDockWidget->setWidget(_serialConfigWidget);
 	_serialDockWidget->setFeatures(defaultDockFeature);
-	addDockWidget(Qt::LeftDockWidgetArea, _serialDockWidget);
-	// TODO ameliorer
-	_serialDockWidget->setFloating(true);
+	addDockWidget(Qt::RightDockWidgetArea, _serialDockWidget);
 
 	setDockOptions(dockOptions() & ~QMainWindow::AllowTabbedDocks);
 
